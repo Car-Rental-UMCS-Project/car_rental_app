@@ -1,6 +1,6 @@
 package com.example.car_rental_app.controller;
 
-import ch.qos.logback.core.model.Model;
+import org.springframework.ui.Model;
 import com.example.car_rental_app.data.User;
 import com.example.car_rental_app.data.UserDTO;
 import com.example.car_rental_app.service.UserService;
@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import java.util.List;
+
 
 @Controller
 public class AuthenticationController {
@@ -61,6 +63,7 @@ public class AuthenticationController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("user", userDTO);
             return "register";
+
         }
 
         USER_SERVICE.saveUser(userDTO);

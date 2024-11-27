@@ -1,6 +1,5 @@
 package com.example.car_rental_app.security;
-
-import me.mmtr.springsecurity.handler.LoginSuccessHandler;
+import com.example.car_rental_app.handler.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,7 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SpringSecurity {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        Object AbstractHttpConfigurer;
         http.authorizeHttpRequests((authorizeRequests) -> {
                     authorizeRequests.requestMatchers("/register").permitAll()
                             .requestMatchers("/login").permitAll()
