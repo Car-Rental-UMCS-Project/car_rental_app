@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin panel</title>
+</head>
+<body>
+<h1>Admin Panel</h1>
+<form th:action="@{/cars/add}" method="get">
+    <button type="submit">Add car</button>
+</form><br>
+<form th:action="@{/cars/admin/all}" method="get">
+    <button type="submit">View cars</button>
+</form><br>
+</body>
+</html>

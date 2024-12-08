@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h2>All cars:</h2><br>
+<div th:each="car : ${cars}">
+    <div>
+        <div th:text="${car.brand}"></div>
+        <div th:text="${car.model}"></div>
+        <div th:text="${car.year}"></div>
+        <div th:text="${car.pricePerHour}"></div>
+        <div>
+            <label>Rented:</label>
+            <span th:text="${car.isRented} ? 'Yes' : 'No'"></span>
+        </div>
+
+        <a th:href="@{/cars/update/{id}(id=${car.id})}">Edit</a>
+        <form method="post" th:action="@{/cars/delete}">
+            <input type="hidden" name="id" th:value="${car.id}">
+            <input type="submit" value="Delete">
+        </form>
+    </div>
+</div><br>
+
+<form th:action="@{/admin}" method="get">
+    <button type="submit">Back</button>
+</form>
+
+
+
+</body>
+</html>

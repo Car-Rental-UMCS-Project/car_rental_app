@@ -1,17 +1,15 @@
 package com.example.car_rental_app.controller;
 
-import org.springframework.ui.Model;
 import com.example.car_rental_app.data.User;
 import com.example.car_rental_app.data.UserDTO;
-import com.example.car_rental_app.service.UserService;
+import com.example.car_rental_app.service.interfaces.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import java.util.List;
-
 
 @Controller
 public class AuthenticationController {
@@ -33,16 +31,6 @@ public class AuthenticationController {
             model.addAttribute("logout", logout);
         }
         return "login";
-    }
-
-    @GetMapping("/home")
-    public String home() {
-        return "home";
-    }
-
-    @GetMapping("/admin")
-    public String admin() {
-        return "admin";
     }
 
     @GetMapping("/register")
@@ -68,13 +56,5 @@ public class AuthenticationController {
 
         USER_SERVICE.saveUser(userDTO);
         return "redirect:/login";
-    }
-
-    @GetMapping("/users")
-    public String users(Model model) {
-        List<UserDTO> userDTOs = USER_SERVICE.findAllUsers();
-
-        model.addAttribute("users", userDTOs);
-        return "users";
     }
 }

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car</title>
+</head>
+<body>
+<h1>Car</h1><br>
+
+<div>
+    <form method="post">
+        <label> Brand:
+            <input type="text" placeholder="Brand" th:field="*{car.brand}" required>
+        </label>
+
+        <label> Model:
+            <input type="text" placeholder="Model" th:field="*{car.model}" required>
+        </label>
+
+        <label> Year:
+            <input type="number" placeholder="Year" th:field="*{car.year}" required>
+        </label>
+
+        <label> Price per hour:
+            <input type="number" placeholder="PricePerHour" th:field="*{car.pricePerHour}" required>
+        </label>
+
+        <div>
+            <label for="isRented">Rented:</label>
+            <select id="isRented" th:field="*{car.isRented}">
+                <option value="false" th:selected="*{!car.isRented}">No</option>
+                <option value="true" th:selected="*{car.isRented}">Yes</option>
+            </select>
+        </div>
+
+        <input type="submit" value="Save">
+    </form>
+</div><br>
+
+<form th:action="@{/admin}" method="get">
+    <button type="submit">Cancel</button>
+</form>
+</body>
+</html>

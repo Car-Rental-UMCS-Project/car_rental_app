@@ -5,6 +5,7 @@ import com.example.car_rental_app.data.User;
 import com.example.car_rental_app.data.UserDTO;
 import com.example.car_rental_app.repository.RoleRepository;
 import com.example.car_rental_app.repository.UserRepository;
+import com.example.car_rental_app.service.interfaces.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

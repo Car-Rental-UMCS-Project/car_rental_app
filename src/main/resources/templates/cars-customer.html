@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    <h2>Available cars:</h2>
+    <form th:each="car : ${availableCars}">
+
+        <div>
+            <label>Brand: </label>
+            <span th:text="${car.brand}"></span>
+        </div>
+        <br>
+
+        <div>
+            <label>Model: </label>
+            <span th:text="${car.model}"></span>
+        </div>
+        <br>
+
+        <div>
+            <label>Year: </label>
+            <span th:text="${car.year}"></span>
+        </div>
+        <br>
+
+        <div>
+            <label>Price per hour: </label>
+            <span th:text="${car.pricePerHour}"></span>
+        </div>
+        <br>
+
+        <form>
+            <button type="submit">Rent</button>
+        </form><br>
+    </form><br>
+
+    <h2>Rented cars: </h2>
+
+    <form th:each="car : ${rentedCars}">
+
+        <div>
+            <label>Brand: </label>
+            <span th:text="${car.brand}"></span>
+        </div>
+        <br>
+
+        <div>
+            <label>Model: </label>
+            <span th:text="${car.model}"></span>
+        </div>
+        <br>
+
+        <div>
+            <label>Year: </label>
+            <span th:text="${car.year}"></span>
+        </div>
+        <br>
+
+        <div>
+            <label>Price per hour: </label>
+            <span th:text="${car.pricePerHour}"></span>
+        </div>
+        <br>
+    </form><br>
+
+    <form th:action="@{/customer}" method="get">
+        <button type="submit">Back</button>
+    </form>
+</div>
+
+</body>
+</html>
