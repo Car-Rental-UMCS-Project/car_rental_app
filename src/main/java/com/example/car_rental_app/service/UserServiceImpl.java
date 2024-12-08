@@ -31,9 +31,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDto.getUsername());
         user.setPassword(PASSWORD_ENCODER.encode(userDto.getPassword()));
 
-        //TODO
-        Role role = ROLE_REPOSITORY.findByName("ADMIN");
-        //Role role = ROLE_REPOSITORY.findByName("USER");
+        Role role = ROLE_REPOSITORY.findByName("USER");
         if (role == null) {
             role = checkIfRoleExistsOrCreate();
         }
@@ -65,8 +63,7 @@ public class UserServiceImpl implements UserService {
 
     private Role checkIfRoleExistsOrCreate() {
         Role role = new Role();
-        //TODO
-        role.setName("ADMIN");
+        role.setName("USER");
         return ROLE_REPOSITORY.save(role);
     }
 }
