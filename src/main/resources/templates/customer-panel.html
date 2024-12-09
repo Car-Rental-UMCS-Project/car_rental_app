@@ -5,10 +5,15 @@
   <title>Home</title>
 </head>
 <body>
-<h1>Hello!</h1>
+<h1>Witaj, <span th:text="${username}">username</span>!</h1>
 
 <form th:action="@{/cars/customer/all}" method="get">
   <button type="submit">View cars</button>
 </form><br>
+
+<form th:action="@{/logout}" method="post">
+  <button type="submit">Logout</button>
+</form><br>
+
 </body>
 </html>

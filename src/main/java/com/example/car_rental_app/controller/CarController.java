@@ -2,6 +2,7 @@ package com.example.car_rental_app.controller;
 
 import com.example.car_rental_app.data.Car;
 import com.example.car_rental_app.service.interfaces.CarService;
+import com.example.car_rental_app.service.interfaces.RentalService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +16,11 @@ public class CarController {
 
     private final CarService carService;
 
-    public CarController(CarService carService) {
+    private final RentalService rentalService;
+
+    public CarController(CarService carService, RentalService rentalService) {
         this.carService = carService;
+        this.rentalService = rentalService;
     }
 
     @GetMapping("/add")
@@ -53,7 +57,6 @@ public class CarController {
     public String allCarsCustomer(Model model) {
         model.addAttribute("availableCars", getSpecificCars(false));
         model.addAttribute("rentedCars", getSpecificCars(true));
-
         return "cars-customer";
     }
 
@@ -69,4 +72,5 @@ public class CarController {
                 .filter(car -> car.getIsRented() == rented)
                 .collect(Collectors.toList());
     }
+
 }

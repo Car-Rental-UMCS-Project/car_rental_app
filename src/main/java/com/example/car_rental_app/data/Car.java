@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,4 +31,7 @@ public class Car {
 
     @Column(nullable = false)
     private Boolean isRented = false;
+
+//    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Rental> rentals = new ArrayList<>();
 }

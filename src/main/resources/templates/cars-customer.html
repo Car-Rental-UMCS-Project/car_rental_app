@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Available Cars</title>
 </head>
 <body>
 
 <div>
     <h2>Available cars:</h2>
-    <form th:each="car : ${availableCars}">
-
+    <div th:each="car : ${availableCars}">
         <div>
             <label>Brand: </label>
             <span th:text="${car.brand}"></span>
@@ -34,15 +33,13 @@
         </div>
         <br>
 
-        <form>
+        <form th:action="@{/rent/{id}(id=${car.id})}" method="get">
             <button type="submit">Rent</button>
         </form><br>
-    </form><br>
+    </div>
 
-    <h2>Rented cars: </h2>
-
-    <form th:each="car : ${rentedCars}">
-
+    <h2>Rented cars:</h2>
+    <div th:each="car : ${rentedCars}">
         <div>
             <label>Brand: </label>
             <span th:text="${car.brand}"></span>
@@ -66,7 +63,7 @@
             <span th:text="${car.pricePerHour}"></span>
         </div>
         <br>
-    </form><br>
+    </div>
 
     <form th:action="@{/customer}" method="get">
         <button type="submit">Back</button>

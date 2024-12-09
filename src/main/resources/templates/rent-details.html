@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Details</title>
+</head>
+<body>
+<div>
+    <h2>Car Details</h2>
+    <div>
+        <label>Brand: </label>
+        <span th:text="${car.brand}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Model: </label>
+        <span th:text="${car.model}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Year: </label>
+        <span th:text="${car.year}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Price per hour: </label>
+        <span th:text="${car.pricePerHour}"></span>
+    </div>
+    <br>
+
+    <form th:action="@{/rent}" method="post">
+        <input type="hidden" name="carId" th:value="${car.id}"/>
+
+        <div>
+            <label>Enter hours: </label>
+            <input type="number" name="hours" min="1" required/>
+        </div>
+        <br>
+
+        <button type="submit">Rent</button>
+    </form>
+
+    <br>
+    <form th:action="@{/cars/customer/all}" method="get">
+        <button type="submit">Back to Available Cars</button>
+    </form>
+</div>
+</body>
+</html>
