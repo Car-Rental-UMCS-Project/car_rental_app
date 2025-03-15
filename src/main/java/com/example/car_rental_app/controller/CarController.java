@@ -2,7 +2,6 @@ package com.example.car_rental_app.controller;
 
 import com.example.car_rental_app.data.Car;
 import com.example.car_rental_app.service.interfaces.CarService;
-import com.example.car_rental_app.service.interfaces.RentalService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +15,8 @@ public class CarController {
 
     private final CarService carService;
 
-    private final RentalService rentalService;
-
-    public CarController(CarService carService, RentalService rentalService) {
+    public CarController(CarService carService) {
         this.carService = carService;
-        this.rentalService = rentalService;
     }
 
     @GetMapping("/add")

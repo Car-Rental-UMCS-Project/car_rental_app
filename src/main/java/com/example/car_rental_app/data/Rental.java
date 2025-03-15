@@ -15,18 +15,13 @@ public class Rental {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "car_id", nullable = false)
-    private Car car;
+    private Long carId;
 
-    @Column(nullable = false)
-    private int timeInHours;
+    private int timeInDays;
 
-    @Column(nullable = false)
     private int totalCost;
+
 
 }

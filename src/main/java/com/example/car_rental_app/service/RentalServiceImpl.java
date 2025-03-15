@@ -24,19 +24,19 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public void rentCar(Long carId, int hours) {
+    public void rentCar(Long carId, int days) {
         User user = userService.getCurrentUser();
-        Car car =   carDAO.getById(carId).orElseThrow(() -> new IllegalArgumentException("Car not found"));
+        Car car = carDAO.getById(carId).orElseThrow(() -> new IllegalArgumentException("Car not found"));
         if (car.getIsRented()){
             throw new IllegalArgumentException("Car is already rented");
         }
         car.setIsRented(true);
 
         Rental rental = new Rental();
-        rental.setUser(user);
-        rental.setCar(car);
-        rental.setTimeInHours(hours);
-        rental.setTotalCost(hours * car.getPricePerHour());
+        rental.setUserId(user.getId());
+        rental.setCarId(car.getId());
+        rental.setTimeInDays(days);
+        rental.setTotalCost(days * car.getPricePerDay());
         rentalDAO.saveRental(rental);
         carDAO.saveOrUpdate(car);
     }
