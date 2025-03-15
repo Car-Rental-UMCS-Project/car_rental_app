@@ -58,7 +58,38 @@
 
 </div><br>
 
-<h2>Rent requests:</h2><br>
+<h2>Rental requests:</h2><br>
+<div th:each="pair: ${carRentalRequestPairs}">
+    <div>
+        <label>Brand: </label>
+        <span th:text="${pair.car.brand}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Model: </label>
+        <span th:text="${pair.car.model}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Year: </label>
+        <span th:text="${pair.car.year}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Price per day: </label>
+        <span th:text="${pair.car.pricePerDay}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Rental period: </label>
+        <span th:text="${pair.rentalRequest.timeInDays}"></span>
+    </div>
+    <br>
+</div>
 
 <form th:action="@{/customer}" method="get">
     <button type="submit">Back</button>

@@ -1,8 +1,10 @@
 package com.example.car_rental_app.controller;
 
 import com.example.car_rental_app.data.CarRentalPair;
+import com.example.car_rental_app.data.CarRentalRequestPair;
 import com.example.car_rental_app.repository.dao.interfaces.IRentalDAO;
 import com.example.car_rental_app.service.interfaces.CarService;
+import com.example.car_rental_app.service.interfaces.RentalRequestService;
 import com.example.car_rental_app.service.interfaces.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +21,14 @@ public class CustomerPanelController {
     private final UserService userService;
     private final IRentalDAO rentalDAO;
     private final CarService carService;
+    private final RentalRequestService rentalRequestService;
 
     public CustomerPanelController(UserService userService, IRentalDAO rentalDAO,
-                                   CarService carService) {
+                                   CarService carService, RentalRequestService rentalRequestService) {
         this.userService = userService;
         this.rentalDAO = rentalDAO;
         this.carService = carService;
+        this.rentalRequestService = rentalRequestService;
     }
 
     @GetMapping("/customer")
@@ -40,6 +44,8 @@ public class CustomerPanelController {
 
         List<CarRentalPair> carRentalPairs = new ArrayList<>();
 
+        List<CarRentalRequestPair> carRentalRequestPairs = new ArrayList<>();
+
         rentalDAO.getAllRentals()
                 .stream()
                 .filter(rental ->
@@ -50,7 +56,18 @@ public class CustomerPanelController {
                         )
                 );
 
+        rentalRequestService.getAll()
+                .stream()
+                .filter(rentalRequest ->
+                        Objects.equals(rentalRequest.getUserId(), userService.getCurrentUser().getId()))
+                .forEach(rentalRequest ->
+                        carRentalRequestPairs.add(new CarRentalRequestPair(
+                                carService.getById(rentalRequest.getCarId()).orElseThrow(), rentalRequest
+                        ))
+                );
+
         model.addAttribute("carRentalPairs", carRentalPairs);
+        model.addAttribute("carRentalRequestPairs", carRentalRequestPairs);
         return "customer-rented-cars";
     }
 }
