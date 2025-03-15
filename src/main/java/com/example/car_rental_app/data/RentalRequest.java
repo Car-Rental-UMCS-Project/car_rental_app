@@ -5,14 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "rental")
-public class Rental {
+@Table(name = "rental_requests")
+public class RentalRequest {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,10 +23,4 @@ public class Rental {
     private int timeInDays;
 
     private int totalCost;
-
-    private LocalDate rentDate;
-
-    private LocalDate returnDate;
-
-    private int lateFee = 0;
 }

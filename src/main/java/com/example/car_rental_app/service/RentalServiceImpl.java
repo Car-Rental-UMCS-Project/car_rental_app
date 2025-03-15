@@ -28,7 +28,7 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public void rentCar(Long carId, int days) {
         User user = userService.getCurrentUser();
-        Car car = carDAO.getById(carId).orElseThrow(() -> new IllegalArgumentException("Car not found"));
+        Car car = carDAO.getById(carId).orElseThrow();
         if (car.getIsRented()){
             throw new IllegalArgumentException("Car is already rented");
         }
@@ -41,6 +41,7 @@ public class RentalServiceImpl implements RentalService {
         rental.setTotalCost(days * car.getPricePerDay());
         rental.setRentDate(LocalDate.now());
         rental.setReturnDate(LocalDate.now().plusDays(days));
+
         rentalDAO.saveRental(rental);
         carDAO.saveOrUpdate(car);
     }
@@ -50,12 +51,19 @@ public class RentalServiceImpl implements RentalService {
         Rental rental = rentalDAO.getRentalByCarId(carId).orElseThrow(() ->
                 new IllegalArgumentException("Rental not found"));
 
-        Car car = carDAO.getById(carId).orElseThrow(() -> new IllegalArgumentException("Car not found"));
+        Car car = carDAO.getById(carId).orElseThrow();
         if(!car.getIsRented()){
             return;
         }
         car.setIsRented(false);
 
         this.rentalDAO.delete(rental.getId());
+    }
+
+    public void updateLateFee(Long rentalId, int fee) {
+        Rental rental = rentalDAO.getRentalById(rentalId).orElseThrow();
+
+        rental.setLateFee(fee);
+        rentalDAO.saveRental(rental);
     }
 }
