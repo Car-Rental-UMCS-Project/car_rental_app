@@ -26,7 +26,7 @@
     <br>
 
     <div>
-        <label>Price per hour: </label>
+        <label>Price per day: </label>
         <span th:text="${car.pricePerDay}"></span>
     </div>
     <br>
@@ -35,7 +35,7 @@
         <input type="hidden" name="carId" th:value="${car.id}"/>
 
         <div>
-            <label>Enter hours: </label>
+            <label>Enter days: </label>
             <input type="number" name="hours" min="1" required/>
         </div>
         <br>

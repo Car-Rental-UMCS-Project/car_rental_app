@@ -39,4 +39,9 @@ public class RentalController {
         }
         return "redirect:/cars/customer/all";
     }
+    @PostMapping("/return")
+    public String returnCar(@RequestParam Long carId) {
+        rentalService.returnCar(carId);
+        return "redirect:/cars/admin/all";
+    }
 }

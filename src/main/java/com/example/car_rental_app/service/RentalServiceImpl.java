@@ -9,6 +9,8 @@ import com.example.car_rental_app.service.interfaces.RentalService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @Transactional
 public class RentalServiceImpl implements RentalService {
@@ -37,7 +39,23 @@ public class RentalServiceImpl implements RentalService {
         rental.setCarId(car.getId());
         rental.setTimeInDays(days);
         rental.setTotalCost(days * car.getPricePerDay());
+        rental.setRentDate(LocalDate.now());
+        rental.setReturnDate(LocalDate.now().plusDays(days));
         rentalDAO.saveRental(rental);
         carDAO.saveOrUpdate(car);
+    }
+
+    @Override
+    public void returnCar(Long carId) {
+        Rental rental = rentalDAO.getRentalByCarId(carId).orElseThrow(() ->
+                new IllegalArgumentException("Rental not found"));
+
+        Car car = carDAO.getById(carId).orElseThrow(() -> new IllegalArgumentException("Car not found"));
+        if(!car.getIsRented()){
+            return;
+        }
+        car.setIsRented(false);
+
+        this.rentalDAO.delete(rental.getId());
     }
 }

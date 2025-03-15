@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface IRentalDAO {
     Optional<Rental> getRentalById(Long id);
+    Optional<Rental> getRentalByCarId(Long carId);
     List<Rental> getAllRentals();
     void saveRental(Rental rental);
     void delete(Long id);
