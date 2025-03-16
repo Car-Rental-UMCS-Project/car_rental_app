@@ -10,7 +10,11 @@ public interface RentalRequestService {
 
     Optional<RentalRequest> getById(Long id);
 
+    Optional<RentalRequest> getRentalByCarId(Long carId);
+
     List<RentalRequest> getAll();
 
     void delete(Long id);
+
+    void requestRent(Long carId, int days);
 }

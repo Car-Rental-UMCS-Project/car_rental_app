@@ -31,7 +31,7 @@
     </div>
     <br>
 
-    <form th:action="@{/rent}" method="post">
+    <form th:action="@{/request-rental}" method="post">
         <input type="hidden" name="carId" th:value="${car.id}"/>
 
         <div>
@@ -40,7 +40,7 @@
         </div>
         <br>
 
-        <button type="submit">Rent</button>
+        <button type="submit">Request rental</button>
     </form>
 
     <br>

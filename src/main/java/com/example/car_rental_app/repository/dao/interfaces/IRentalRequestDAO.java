@@ -10,6 +10,8 @@ public interface IRentalRequestDAO {
 
     List<RentalRequest> getAll();
 
+    Optional<RentalRequest> getRentalRequestByCarId(Long carId);
+
     void saveOrUpdate(RentalRequest rentalRequest);
 
     void delete(Long id);

@@ -23,13 +23,113 @@
             <input type="hidden" name="id" th:value="${car.id}">
             <input type="submit" value="Delete">
         </form>
-
-        <form method="post" th:action="@{/return}">
-            <input type="hidden" name="carId" th:value="${car.id}">
-            <input type="submit" value="Return">
-        </form>
     </div>
 </div><br>
+
+<h2>Rented cars:</h2><br>
+<div th:each="tuple : ${carRentalUserTuples}">
+
+    <div>
+        <label>Rented by: </label>
+        <span th:text="${tuple.user.username}"></span>
+    </div><br>
+
+    <div>
+        <label>Brand: </label>
+        <span th:text="${tuple.car.brand}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Model: </label>
+        <span th:text="${tuple.car.model}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Year: </label>
+        <span th:text="${tuple.car.year}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Price per day: </label>
+        <span th:text="${tuple.car.pricePerDay}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Rental date: </label>
+        <span th:text="${tuple.rental.rentalDate}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Return date: </label>
+        <span th:text="${tuple.rental.returnDate}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Late fee: </label>
+        <span th:text="${tuple.rental.lateFee}"></span>
+    </div>
+    <br>
+    <form method="post" th:action="@{/return}">
+        <input type="hidden" name="carId" th:value="${tuple.car.id}">
+        <input type="submit" value="Mark as returned">
+    </form>
+</div>
+
+<h2>Rental requests:</h2><br>
+<div th:each="tuple : ${carRentalRequestUserTuples}">
+
+    <div>
+        <label>Requested by: </label>
+        <span th:text="${tuple.user.username}"></span>
+    </div><br>
+
+    <div>
+        <label>Brand: </label>
+        <span th:text="${tuple.car.brand}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Model: </label>
+        <span th:text="${tuple.car.model}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Year: </label>
+        <span th:text="${tuple.car.year}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Price per day: </label>
+        <span th:text="${tuple.car.pricePerDay}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Rental period: </label>
+        <span th:text="${tuple.rentalRequest.timeInDays}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Total cost: </label>
+        <span th:text="${tuple.rentalRequest.totalCost}"></span>
+    </div>
+    <br>
+
+    <form th:action="@{/rent/{id}(id=${tuple.car.id})}" method="get">
+        <button type="submit">Rent</button>
+    </form><br>
+
+</div>
 
 <form th:action="@{/admin}" method="get">
     <button type="submit">Back</button>

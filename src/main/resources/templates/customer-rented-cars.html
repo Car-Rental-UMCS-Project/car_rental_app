@@ -7,86 +7,92 @@
 <body>
 
 <h2>Rented cars:</h2><br>
-<div th:each="pair : ${carRentalPairs}">
+<div th:each="tuple : ${carRentalTuples}">
     <div>
         <label>Brand: </label>
-        <span th:text="${pair.car.brand}"></span>
+        <span th:text="${tuple.car.brand}"></span>
     </div>
     <br>
 
     <div>
         <label>Model: </label>
-        <span th:text="${pair.car.model}"></span>
+        <span th:text="${tuple.car.model}"></span>
     </div>
     <br>
 
     <div>
         <label>Year: </label>
-        <span th:text="${pair.car.year}"></span>
+        <span th:text="${tuple.car.year}"></span>
     </div>
     <br>
 
     <div>
         <label>Price per day: </label>
-        <span th:text="${pair.car.pricePerDay}"></span>
+        <span th:text="${tuple.car.pricePerDay}"></span>
     </div>
     <br>
 
     <div>
         <label>Rental period: </label>
-        <span th:text="${pair.rental.timeInDays}"></span>
+        <span th:text="${tuple.rental.timeInDays}"></span>
+    </div>
+    <br>
+
+    <div>
+        <label>Rental date: </label>
+        <span th:text="${tuple.rental.rentalDate}"></span>
     </div>
     <br>
 
     <div>
         <label>Return date: </label>
-        <span th:text="${pair.rental.returnDate}"></span>
+        <span th:text="${tuple.rental.returnDate}"></span>
     </div>
     <br>
 
     <div>
         <label>Total cost: </label>
-        <span th:text="${pair.rental.totalCost}"></span>
+        <span th:text="${tuple.rental.totalCost}"></span>
     </div>
     <br>
 
     <div>
         <label>Late fee: </label>
-        <span th:text="${pair.rental.lateFee}"></span>
+        <span th:text="${tuple.rental.lateFee}"></span>
     </div>
     <br>
 
 </div><br>
 
 <h2>Rental requests:</h2><br>
-<div th:each="pair: ${carRentalRequestPairs}">
+<div th:each="tuple: ${carRentalRequestTuples}">
     <div>
         <label>Brand: </label>
-        <span th:text="${pair.car.brand}"></span>
+        <span th:text="${tuple.car.brand}"></span>
     </div>
     <br>
 
     <div>
         <label>Model: </label>
-        <span th:text="${pair.car.model}"></span>
+        <span th:text="${tuple.car.model}"></span>
     </div>
     <br>
 
     <div>
         <label>Year: </label>
-        <span th:text="${pair.car.year}"></span>
+        <span th:text="${tuple.car.year}"></span>
     </div>
     <br>
 
     <div>
         <label>Price per day: </label>
-        <span th:text="${pair.car.pricePerDay}"></span>
+        <span th:text="${tuple.car.pricePerDay}"></span>
     </div>
     <br>
 
     <div>
         <label>Rental period: </label>
-        <span th:text="${pair.rentalRequest.timeInDays}"></span>
+        <span th:text="${tuple.rentalRequest.timeInDays}"></span>
     </div>
     <br>
 </div>

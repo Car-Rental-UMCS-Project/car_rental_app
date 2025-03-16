@@ -41,6 +41,12 @@ public class RentalRequestDAO implements IRentalRequestDAO {
     }
 
     @Override
+    public Optional<RentalRequest> getRentalRequestByCarId(Long carId) {
+        return getAll().stream().filter(rentalRequest ->
+                rentalRequest.getCarId().equals(carId)).findFirst();
+    }
+
+    @Override
     public void saveOrUpdate(RentalRequest rentalRequest) {
         if(getById(rentalRequest.getId()).isEmpty()) {
             entityManager.persist(rentalRequest);

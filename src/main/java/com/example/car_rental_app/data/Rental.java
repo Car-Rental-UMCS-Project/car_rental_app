@@ -25,7 +25,7 @@ public class Rental {
 
     private int totalCost;
 
-    private LocalDate rentDate;
+    private LocalDate rentalDate;
 
     private LocalDate returnDate;
 
