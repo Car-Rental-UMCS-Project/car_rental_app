@@ -1,52 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <title>Car Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <style>
+        body {
+          font-family: 'Poppins', sans-serif;
+          background-color: var(--bs-body-bg);
+          color: var(--bs-body-color);
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2rem;
+          transition: background 0.3s;
+        }
+        html[data-bs-theme="light"] body {
+          background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+        }
+        html[data-bs-theme="dark"] body {
+          background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        .card-details {
+          background: var(--bs-body-bg-translucent);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-radius: 1rem;
+          border: none;
+          max-width: 500px;
+          width: 100%;
+          box-shadow: 0 .5rem 1rem rgba(0,0,0,0.1);
+          transition: background 0.3s;
+        }
+        html[data-bs-theme="dark"] .card-details {
+          background: linear-gradient(135deg, #0a2540 0%, #1f4068 100%);
+        }
+        .card-header {
+          background: transparent;
+          border-bottom: none;
+          text-align: center;
+          font-size: 1.75rem;
+          font-weight: 600;
+          color: var(--bs-primary);
+        }
+        .detail-item {
+          margin-bottom: 1rem;
+        }
+        .detail-item strong {
+          display: inline-block;
+          width: 130px;
+          font-weight: 500;
+          color: var(--bs-body-color);
+        }
+        .form-control, .btn {
+          border-radius: .5rem;
+        }
+        .btn-modern {
+          border-radius: 50px;
+          padding: .5rem 1.5rem;
+          font-weight: 600;
+        }
+        #themeToggle {
+          position: fixed;
+          top: 1rem;
+          right: 1rem;
+          z-index: 1000;
+        }
+    </style>
 </head>
 <body>
-<div>
-    <h2>Car Details</h2>
-    <div>
-        <label>Brand: </label>
-        <span th:text="${car.brand}"></span>
-    </div>
-    <br>
 
-    <div>
-        <label>Model: </label>
-        <span th:text="${car.model}"></span>
-    </div>
-    <br>
+<!-- Theme Switcher -->
+<button id="themeToggle" class="btn btn-sm btn-light d-flex align-items-center gap-1" type="button" title="Toggle theme">
+    <i class="bi bi-circle-half"></i>
+    <span class="d-none d-md-inline">Theme</span>
+</button>
 
-    <div>
-        <label>Year: </label>
-        <span th:text="${car.year}"></span>
-    </div>
-    <br>
+<div class="card card-details p-4" data-aos="fade-up">
+    <div class="card-header">Car Details</div>
+    <div class="card-body">
+        <div class="detail-item"><strong>Brand:</strong> <span th:text="${car.brand}"></span></div>
+        <div class="detail-item"><strong>Model:</strong> <span th:text="${car.model}"></span></div>
+        <div class="detail-item"><strong>Year:</strong> <span th:text="${car.year}"></span></div>
+        <div class="detail-item"><strong>Price/day:</strong> $<span th:text="${car.pricePerDay}"></span></div>
 
-    <div>
-        <label>Price per day: </label>
-        <span th:text="${car.pricePerDay}"></span>
-    </div>
-    <br>
+        <form th:action="@{/request-rental}" method="post" class="mb-4">
+            <input type="hidden" name="carId" th:value="${car.id}" />
+            <div class="mb-3">
+                <label for="days" class="form-label"><strong>Enter days:</strong></label>
+                <input type="number" id="days" name="days" class="form-control" min="1" required />
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-modern">
+                    <i class="bi bi-calendar2-plus me-2"></i>Request Rental
+                </button>
+            </div>
+        </form>
 
-    <form th:action="@{/request-rental}" method="post">
-        <input type="hidden" name="carId" th:value="${car.id}"/>
-
-        <div>
-            <label>Enter days: </label>
-            <input type="number" name="days" min="1" required/>
+        <div class="text-center">
+            <form th:action="@{/cars/customer/all}" method="get">
+                <button type="submit" class="btn btn-outline-secondary btn-modern">
+                    <i class="bi bi-arrow-left-circle me-2"></i>Back to Available Cars
+                </button>
+            </form>
         </div>
-        <br>
-
-        <button type="submit">Request rental</button>
-    </form>
-
-    <br>
-    <form th:action="@{/cars/customer/all}" method="get">
-        <button type="submit">Back to Available Cars</button>
-    </form>
+    </div>
 </div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({ duration: 600, once: true });
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const html = document.documentElement;
+      html.dataset.bsTheme = html.dataset.bsTheme === 'dark' ? 'light' : 'dark';
+    });
+</script>
 </body>
 </html>

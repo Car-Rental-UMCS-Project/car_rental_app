@@ -1,141 +1,224 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Car Rental Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <style>
+        body {
+          font-family: 'Poppins', sans-serif;
+          background-color: var(--bs-body-bg);
+          color: var(--bs-body-color);
+          min-height: 100vh;
+        }
+        html[data-bs-theme="light"] body {
+          background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        html[data-bs-theme="dark"] body {
+          background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        .section-title {
+          font-weight: 600;
+          color: var(--bs-body-color);
+          margin-bottom: 1rem;
+          position: relative;
+        }
+        .section-title::after {
+          content: '';
+          width: 50px;
+          height: 4px;
+          background: var(--bs-primary);
+          position: absolute;
+          bottom: -6px;
+          left: 0;
+          border-radius: 2px;
+        }
+        .card-glass {
+          background: var(--bs-body-bg-translucent);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border: none;
+          border-radius: 1rem;
+          transition: background 0.3s;
+        }
+        html[data-bs-theme="dark"] .card-glass {
+          background: linear-gradient(135deg, #0a2540 0%, #1f4068 100%);
+        }
+        .btn-modern {
+          border-radius: 50px;
+          padding: 0.5rem 1.5rem;
+          font-weight: 600;
+        }
+        .table-responsive {
+          overflow: auto;
+        }
+        /* Force header bg in both themes */
+        .table thead th {
+          background-color: var(--bs-tertiary-bg) !important;
+          color: var(--bs-body-color) !important;
+        }
+        .accordion-button:not(.collapsed) {
+          background-color: var(--bs-primary);
+          color: #fff;
+        }
+        /* Footer surface in both themes */
+        .footer-surface {
+          background-color: var(--bs-tertiary--body-bg);
+        }
+    </style>
 </head>
 <body>
 
-<h2>All cars:</h2><br>
-<div th:each="car : ${cars}">
-    <div>
-        <div th:text="${car.brand}"></div>
-        <div th:text="${car.model}"></div>
-        <div th:text="${car.year}"></div>
-        <div th:text="${car.pricePerDay}"></div>
-        <div>
-            <label>Rented:</label>
-            <span th:text="${car.isRented} ? 'Yes' : 'No'"></span>
-        </div>
+<nav class="navbar navbar-expand-lg bg-body shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">Car Rental Admin</a>
+        <button id="themeToggle" class="btn btn-sm btn-light d-flex align-items-center gap-1 ms-auto" type="button" title="Toggle light/dark">
+            <i class="bi bi-circle-half"></i><span class="d-none d-md-inline">Theme</span>
+        </button>
+    </div>
+</nav>
 
-        <a th:href="@{/cars/update/{id}(id=${car.id})}">Edit</a>
-        <form method="post" th:action="@{/cars/delete}">
-            <input type="hidden" name="id" th:value="${car.id}">
-            <input type="submit" value="Delete">
+<main class="container py-5">
+    <!-- All Cars -->
+    <section data-aos="fade-up">
+        <h2 class="section-title">All Cars</h2>
+        <div class="table-responsive mb-5">
+            <table class="table table-hover table-striped rounded shadow-sm">
+                <thead>
+                <tr>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                    <th>Price/Day</th>
+                    <th>Rented</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="car : ${cars}" data-aos="fade-right">
+                    <td th:text="${car.brand}"></td>
+                    <td th:text="${car.model}"></td>
+                    <td th:text="${car.year}"></td>
+                    <td th:text="${car.pricePerDay}"></td>
+                    <td>
+                      <span class="badge" th:classappend="${car.isRented} ? 'bg-danger' : 'bg-success'"
+                            th:text="${car.isRented} ? 'Yes' : 'No'"></span>
+                    </td>
+                    <td class="text-center">
+                        <a th:href="@{/cars/update/{id}(id=${car.id})}" class="btn btn-sm btn-primary btn-modern me-2">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <form th:action="@{/cars/delete}" method="post" class="d-inline">
+                            <input type="hidden" name="id" th:value="${car.id}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger btn-modern">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Rented Cars Accordion -->
+    <section data-aos="fade-up" data-aos-delay="100">
+        <h2 class="section-title">Rented Cars</h2>
+        <div class="accordion" id="rentedCarsAccordion">
+            <div class="accordion-item" th:each="tuple,iterStat : ${carRentalUserTuples}">
+                <h2 class="accordion-header" id="heading-[[${iterStat.index}]]">
+                    <button class="accordion-button collapsed card-glass" type="button" data-bs-toggle="collapse"
+                            th:attr="data-bs-target='#collapse-[[${iterStat.index}]]'"
+                            aria-expanded="false" th:attr="aria-controls='collapse-[[${iterStat.index}]]'">
+                        <i class="bi bi-person-fill me-2"></i>
+                        <span th:text="${tuple.user.username}"></span> – <span th:text="${tuple.car.brand} + ' ' + ${tuple.car.model}"></span>
+                    </button>
+                </h2>
+                <div th:id="|'collapse-' + ${iterStat.index}|" class="accordion-collapse collapse"
+                     th:attr="aria-labelledby='heading-' + ${iterStat.index}" data-bs-parent="#rentedCarsAccordion">
+                    <div class="accordion-body card-glass">
+                        <p><strong>Year:</strong> <span th:text="${tuple.car.year}"></span></p>
+                        <p><strong>Price/Day:</strong> $<span th:text="${tuple.car.pricePerDay}"></span></p>
+                        <p><strong>Rental Date:</strong> <span th:text="${tuple.rental.rentalDate}"></span></p>
+                        <p><strong>Return Date:</strong> <span th:text="${tuple.rental.returnDate}"></span></p>
+                        <p><strong>Late Fee:</strong> $<span th:text="${tuple.rental.lateFee}"></span></p>
+                        <form method="post" th:action="@{/return}" class="mt-3">
+                            <input type="hidden" name="carId" th:value="${tuple.car.id}">
+                            <button type="submit" class="btn btn-success btn-modern">
+                                <i class="bi bi-check-circle me-1"></i>Mark as Returned
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rental Requests Accordion -->
+    <section data-aos="fade-up" data-aos-delay="200">
+        <h2 class="section-title">Rental Requests</h2>
+        <div class="accordion" id="requestsAccordion">
+            <div class="accordion-item" th:each="tuple,iterStat : ${carRentalRequestUserTuples}">
+                <h2 class="accordion-header" id="req-heading-[[${iterStat.index}]]">
+                    <button class="accordion-button collapsed card-glass" type="button" data-bs-toggle="collapse"
+                            th:attr="data-bs-target='#req-collapse-[[${iterStat.index}]]'"
+                            aria-expanded="false" th:attr="aria-controls='req-collapse-[[${iterStat.index}]]'">
+                        <i class="bi bi-clock-history me-2"></i>
+                        <span th:text="${tuple.user.username}"></span> wants <span th:text="${tuple.rentalRequest.timeInDays} + ' days'"></span>
+                    </button>
+                </h2>
+                <div th:id="|'req-collapse-' + ${iterStat.index}|" class="accordion-collapse collapse"
+                     th:attr="aria-labelledby='req-heading-' + ${iterStat.index}" data-bs-parent="#requestsAccordion">
+                    <div class="accordion-body card-glass">
+                        <p><strong>Car:</strong> <span th:text="${tuple.car.brand} + ' ' + ${tuple.car.model}"></span></p>
+                        <p><strong>Year:</strong> <span th:text="${tuple.car.year}"></span></p>
+                        <p><strong>Price/Day:</strong> $<span th:text="${tuple.car.pricePerDay}"></span></p>
+                        <p><strong>Total Cost:</strong> $<span th:text="${tuple.rentalRequest.totalCost}"></span></p>
+                        <form th:action="@{/rent/{id}(id=${tuple.car.id})}" method="get" class="mt-3">
+                            <button type="submit" class="btn btn-primary btn-modern">
+                                <i class="bi bi-car-front-fill me-1"></i>Approve Rent
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back Button -->
+    <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="300">
+        <form th:action="@{/admin}" method="get">
+            <button type="submit" class="btn btn-outline-secondary btn-modern">
+                <i class="bi bi-arrow-left-circle me-1"></i>Back to Dashboard
+            </button>
         </form>
     </div>
-</div><br>
+</main>
 
-<h2>Rented cars:</h2><br>
-<div th:each="tuple : ${carRentalUserTuples}">
+<footer class="text-center text-muted py-3 footer-surface">
+    &copy; 2025 Car Rental Inc.
+</footer>
 
-    <div>
-        <label>Rented by: </label>
-        <span th:text="${tuple.user.username}"></span>
-    </div><br>
-
-    <div>
-        <label>Brand: </label>
-        <span th:text="${tuple.car.brand}"></span>
-    </div>
-    <br>
-
-    <div>
-        <label>Model: </label>
-        <span th:text="${tuple.car.model}"></span>
-    </div>
-    <br>
-
-    <div>
-        <label>Year: </label>
-        <span th:text="${tuple.car.year}"></span>
-    </div>
-    <br>
-
-    <div>
-        <label>Price per day: </label>
-        <span th:text="${tuple.car.pricePerDay}"></span>
-    </div>
-    <br>
-
-    <div>
-        <label>Rental date: </label>
-        <span th:text="${tuple.rental.rentalDate}"></span>
-    </div>
-    <br>
-
-    <div>
-        <label>Return date: </label>
-        <span th:text="${tuple.rental.returnDate}"></span>
-    </div>
-    <br>
-
-    <div>
-        <label>Late fee: </label>
-        <span th:text="${tuple.rental.lateFee}"></span>
-    </div>
-    <br>
-    <form method="post" th:action="@{/return}">
-        <input type="hidden" name="carId" th:value="${tuple.car.id}">
-        <input type="submit" value="Mark as returned">
-    </form>
-</div>
-
-<h2>Rental requests:</h2><br>
-<div th:each="tuple : ${carRentalRequestUserTuples}">
-
-    <div>
-        <label>Requested by: </label>
-        <span th:text="${tuple.user.username}"></span>
-    </div><br>
-
-    <div>
-        <label>Brand: </label>
-        <span th:text="${tuple.car.brand}"></span>
-    </div>
-    <br>
-
-    <div>
-        <label>Model: </label>
-        <span th:text="${tuple.car.model}"></span>
-    </div>
-    <br>
-
-    <div>
-        <label>Year: </label>
-        <span th:text="${tuple.car.year}"></span>
-    </div>
-    <br>
-
-    <div>
-        <label>Price per day: </label>
-        <span th:text="${tuple.car.pricePerDay}"></span>
-    </div>
-    <br>
-
-    <div>
-        <label>Rental period: </label>
-        <span th:text="${tuple.rentalRequest.timeInDays}"></span>
-    </div>
-    <br>
-
-    <div>
-        <label>Total cost: </label>
-        <span th:text="${tuple.rentalRequest.totalCost}"></span>
-    </div>
-    <br>
-
-    <form th:action="@{/rent/{id}(id=${tuple.car.id})}" method="get">
-        <button type="submit">Rent</button>
-    </form><br>
-
-</div>
-
-<form th:action="@{/admin}" method="get">
-    <button type="submit">Back</button>
-</form>
-
-
-
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({ duration: 600, once: true });
+    // Theme switcher
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const root = document.documentElement;
+      root.dataset.bsTheme = root.dataset.bsTheme === 'dark' ? 'light' : 'dark';
+    });
+</script>
 </body>
 </html>
