@@ -1,74 +1,140 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <title>Available Cars</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bs-body-bg);
+            color: var(--bs-body-color);
+            min-height: 100vh;
+        }
+        html[data-bs-theme="light"] body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        html[data-bs-theme="dark"] body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        .section-title {
+            font-weight: 600;
+            color: var(--bs-body-color);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            width: 50px;
+            height: 4px;
+            background: var(--bs-primary);
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            border-radius: 2px;
+        }
+        .card-glass {
+            background: var(--bs-body-bg-translucent);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 1rem;
+            transition: background 0.3s;
+        }
+        /* Optional: adjust card background in dark theme */
+        html[data-bs-theme="dark"] .card-glass {
+            background: linear-gradient(135deg, #0a2540 0%, #1f4068 100%) !important;
+        }
+        .btn-modern {
+            border-radius: 50px;
+            padding: 0.4rem 1.2rem;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
 
-<div>
-    <h2>Available cars:</h2>
-    <div th:each="car : ${availableCars}">
-        <div>
-            <label>Brand: </label>
-            <span th:text="${car.brand}"></span>
-        </div>
-        <br>
-
-        <div>
-            <label>Model: </label>
-            <span th:text="${car.model}"></span>
-        </div>
-        <br>
-
-        <div>
-            <label>Year: </label>
-            <span th:text="${car.year}"></span>
-        </div>
-        <br>
-
-        <div>
-            <label>Price per hour: </label>
-            <span th:text="${car.pricePerDay}"></span>
-        </div>
-        <br>
-
-        <form th:action="@{/request-rental/{id}(id=${car.id})}" method="get">
-            <button type="submit">Request rental</button>
-        </form><br>
+<nav class="navbar navbar-expand-lg bg-body shadow-sm mb-4">
+    <div class="container">
+        <span class="navbar-brand fw-bold">Available Cars</span>
+        <button id="themeToggle" class="btn btn-sm btn-light d-flex align-items-center gap-1 ms-auto" type="button" title="Toggle light/dark">
+            <i class="bi bi-circle-half"></i><span class="d-none d-md-inline">Theme</span>
+        </button>
     </div>
+</nav>
 
-    <h2>Rented cars:</h2>
-    <div th:each="car : ${rentedCars}">
-        <div>
-            <label>Brand: </label>
-            <span th:text="${car.brand}"></span>
+<main class="container pb-5">
+    <!-- Available Cars Section -->
+    <section data-aos="fade-up">
+        <h2 class="section-title">Available Cars</h2>
+        <div class="row g-4">
+            <div class="col-md-6" th:each="car : ${availableCars}" data-aos="fade-right">
+                <div class="card card-glass h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title fw-semibold" th:text="${car.brand} + ' ' + ${car.model}"></h5>
+                        <p class="card-text mb-1"><strong>Year:</strong> <span th:text="${car.year}"></span></p>
+                        <p class="card-text mb-3"><strong>Price/day:</strong> $<span th:text="${car.pricePerDay}"></span></p>
+                        <form th:action="@{/request-rental/{id}(id=${car.id})}" method="get">
+                            <button type="submit" class="btn btn-primary btn-modern">
+                                <i class="bi bi-car-front-fill me-1"></i>Request Rental
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br>
+    </section>
 
-        <div>
-            <label>Model: </label>
-            <span th:text="${car.model}"></span>
+    <!-- Rented Cars Section -->
+    <section data-aos="fade-up" data-aos-delay="100" class="mt-5">
+        <h2 class="section-title">Rented Cars</h2>
+        <div class="row g-4">
+            <div class="col-md-6" th:each="car : ${rentedCars}" data-aos="fade-left">
+                <div class="card card-glass h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger fw-semibold" th:text="${car.brand} + ' ' + ${car.model}"></h5>
+                        <p class="card-text mb-1"><strong>Year:</strong> <span th:text="${car.year}"></span></p>
+                        <p class="card-text mb-3"><strong>Price/day:</strong> $<span th:text="${car.pricePerDay}"></span></p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br>
+    </section>
 
-        <div>
-            <label>Year: </label>
-            <span th:text="${car.year}"></span>
-        </div>
-        <br>
-
-        <div>
-            <label>Price per day: </label>
-            <span th:text="${car.pricePerDay}"></span>
-        </div>
-        <br>
+    <!-- Back Button -->
+    <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="200">
+        <form th:action="@{/customer}" method="get">
+            <button type="submit" class="btn btn-outline-secondary btn-modern">
+                <i class="bi bi-arrow-left-circle me-1"></i>Back
+            </button>
+        </form>
     </div>
+</main>
 
-    <form th:action="@{/customer}" method="get">
-        <button type="submit">Back</button>
-    </form>
-</div>
+<footer class="text-center text-muted py-3 --bs-body-tertiary-bg">
+    &copy; 2025 Car Rental
+</footer>
 
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({ duration: 600, once: true });
+    // Theme switcher
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        const root = document.documentElement;
+        root.dataset.bsTheme = root.dataset.bsTheme === 'dark' ? 'light' : 'dark';
+    });
+</script>
 </body>
 </html>

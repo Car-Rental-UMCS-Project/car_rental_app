@@ -1,23 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
   <meta charset="UTF-8">
   <title>Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- AOS Animations -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bs-body-bg);
+      color: var(--bs-body-color);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 2rem;
+      transition: background 0.3s;
+    }
+    html[data-bs-theme="light"] body {
+      background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    }
+    html[data-bs-theme="dark"] body {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+    .card-glass {
+      background: var(--bs-body-bg-translucent);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: none;
+      border-radius: 1rem;
+      box-shadow: 0 .5rem 1rem rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+      position: relative;
+      transition: background 0.3s;
+    }
+    /* Dark theme: navy gradient for card background */
+    html[data-bs-theme="dark"] .card-glass {
+      background: linear-gradient(135deg, #0a2540 0%, #1f4068 100%) !important;
+    }
+    .card-header {
+      background: transparent;
+      border-bottom: none;
+      text-align: center;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--bs-primary);
+    }
+    .btn-modern {
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      font-weight: 600;
+    }
+    .card-body h1 {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--bs-body-color);
+    }
+    /* Theme toggle button */
+    #themeToggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1000;
+    }
+  </style>
 </head>
 <body>
-<h1>Hello, <span th:text="${username}">username</span>!</h1>
 
-<form th:action="@{/cars/customer/all}" method="get">
-  <button type="submit">View available cars</button>
-</form><br>
+<!-- Theme Switcher -->
+<button id="themeToggle" class="btn btn-sm btn-light d-flex align-items-center gap-1" type="button" title="Toggle light/dark">
+  <i class="bi bi-circle-half"></i><span class="d-none d-md-inline">Theme</span>
+</button>
 
-<form th:action="@{/customer/cars}" method="get">
-  <button type="submit">Your cars</button>
-</form><br>
+<div class="card card-glass p-4" data-aos="fade-up">
+  <div class="card-header">Welcome</div>
+  <div class="card-body text-center">
+    <h1>Hello, <span th:text="${username}">username</span>!</h1>
+    <div class="d-grid gap-3 mt-4">
+      <form th:action="@{/cars/customer/all}" method="get">
+        <button type="submit" class="btn btn-primary btn-modern">
+          <i class="bi bi-view-list me-2"></i>View Available Cars
+        </button>
+      </form>
+      <form th:action="@{/customer/cars}" method="get">
+        <button type="submit" class="btn btn-secondary btn-modern">
+          <i class="bi bi-car-front-fill me-2"></i>Your Cars
+        </button>
+      </form>
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" class="btn btn-outline-danger btn-modern">
+          <i class="bi bi-box-arrow-right me-2"></i>Logout
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
 
-<form th:action="@{/logout}" method="post">
-  <button type="submit">Logout</button>
-</form><br>
-
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 600, once: true });
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const root = document.documentElement;
+    root.dataset.bsTheme = root.dataset.bsTheme === 'dark' ? 'light' : 'dark';
+  });
+</script>
 </body>
 </html>
