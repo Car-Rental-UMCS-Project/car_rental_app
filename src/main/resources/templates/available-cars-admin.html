@@ -139,7 +139,7 @@
                 <h2 class="accordion-header" id="heading-[[${iterStat.index}]]">
                     <button class="accordion-button collapsed card-glass" type="button" data-bs-toggle="collapse"
                             th:attr="data-bs-target='#collapse-[[${iterStat.index}]]'"
-                            aria-expanded="false" th:attr="aria-controls='collapse-[[${iterStat.index}]]'">
+                            aria-expanded="false">
                         <i class="bi bi-person-fill me-2"></i>
                         <span th:text="${tuple.user.username}"></span> – <span th:text="${tuple.car.brand} + ' ' + ${tuple.car.model}"></span>
                     </button>
@@ -172,7 +172,7 @@
                 <h2 class="accordion-header" id="req-heading-[[${iterStat.index}]]">
                     <button class="accordion-button collapsed card-glass" type="button" data-bs-toggle="collapse"
                             th:attr="data-bs-target='#req-collapse-[[${iterStat.index}]]'"
-                            aria-expanded="false" th:attr="aria-controls='req-collapse-[[${iterStat.index}]]'">
+                            aria-expanded="false">
                         <i class="bi bi-clock-history me-2"></i>
                         <span th:text="${tuple.user.username}"></span> wants <span th:text="${tuple.rentalRequest.timeInDays} + ' days'"></span>
                     </button>
