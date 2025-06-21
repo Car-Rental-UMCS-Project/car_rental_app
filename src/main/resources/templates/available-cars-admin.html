@@ -131,66 +131,64 @@
         </div>
     </section>
 
-    <!-- Rented Cars Accordion -->
+    <!-- Rented Cars List -->
     <section data-aos="fade-up" data-aos-delay="100">
         <h2 class="section-title">Rented Cars</h2>
-        <div class="accordion" id="rentedCarsAccordion">
-            <div class="accordion-item" th:each="tuple,iterStat : ${carRentalUserTuples}">
-                <h2 class="accordion-header" id="heading-[[${iterStat.index}]]">
-                    <button class="accordion-button collapsed card-glass" type="button" data-bs-toggle="collapse"
-                            th:attr="data-bs-target='#collapse-[[${iterStat.index}]]'"
-                            aria-expanded="false">
-                        <i class="bi bi-person-fill me-2"></i>
-                        <span th:text="${tuple.user.username}"></span> – <span th:text="${tuple.car.brand} + ' ' + ${tuple.car.model}"></span>
+
+        <div th:if="${#lists.isEmpty(carRentalUserTuples)}">
+            <p>No cars currently rented.</p>
+        </div>
+
+        <div class="rented-car" th:each="tuple : ${carRentalUserTuples}">
+            <div class="card card-glass mb-4 p-3">
+                <h5>
+                    <i class="bi bi-person-fill me-2"></i>
+                    <span th:text="${tuple.user.username}"></span> –
+                    <span th:text="${tuple.car.brand} + ' ' + ${tuple.car.model}"></span>
+                </h5>
+
+                <p><strong>Year:</strong> <span th:text="${tuple.car.year}"></span></p>
+                <p><strong>Price/Day:</strong> $<span th:text="${tuple.car.pricePerDay}"></span></p>
+                <p><strong>Rental Date:</strong> <span th:text="${tuple.rental.rentalDate}"></span></p>
+                <p><strong>Return Date:</strong> <span th:text="${tuple.rental.returnDate}"></span></p>
+                <p><strong>Late Fee:</strong> $<span th:text="${tuple.rental.lateFee}"></span></p>
+
+                <form method="post" th:action="@{/return}" class="mt-3">
+                    <input type="hidden" name="carId" th:value="${tuple.car.id}">
+                    <button type="submit" class="btn btn-success btn-modern">
+                        <i class="bi bi-check-circle me-1"></i>Mark as Returned
                     </button>
-                </h2>
-                <div th:id="|'collapse-' + ${iterStat.index}|" class="accordion-collapse collapse"
-                     th:attr="aria-labelledby='heading-' + ${iterStat.index}" data-bs-parent="#rentedCarsAccordion">
-                    <div class="accordion-body card-glass">
-                        <p><strong>Year:</strong> <span th:text="${tuple.car.year}"></span></p>
-                        <p><strong>Price/Day:</strong> $<span th:text="${tuple.car.pricePerDay}"></span></p>
-                        <p><strong>Rental Date:</strong> <span th:text="${tuple.rental.rentalDate}"></span></p>
-                        <p><strong>Return Date:</strong> <span th:text="${tuple.rental.returnDate}"></span></p>
-                        <p><strong>Late Fee:</strong> $<span th:text="${tuple.rental.lateFee}"></span></p>
-                        <form method="post" th:action="@{/return}" class="mt-3">
-                            <input type="hidden" name="carId" th:value="${tuple.car.id}">
-                            <button type="submit" class="btn btn-success btn-modern">
-                                <i class="bi bi-check-circle me-1"></i>Mark as Returned
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </section>
 
-    <!-- Rental Requests Accordion -->
+    <!-- Rental Requests List -->
     <section data-aos="fade-up" data-aos-delay="200">
         <h2 class="section-title">Rental Requests</h2>
-        <div class="accordion" id="requestsAccordion">
-            <div class="accordion-item" th:each="tuple,iterStat : ${carRentalRequestUserTuples}">
-                <h2 class="accordion-header" id="req-heading-[[${iterStat.index}]]">
-                    <button class="accordion-button collapsed card-glass" type="button" data-bs-toggle="collapse"
-                            th:attr="data-bs-target='#req-collapse-[[${iterStat.index}]]'"
-                            aria-expanded="false">
-                        <i class="bi bi-clock-history me-2"></i>
-                        <span th:text="${tuple.user.username}"></span> wants <span th:text="${tuple.rentalRequest.timeInDays} + ' days'"></span>
+
+        <div th:if="${#lists.isEmpty(carRentalRequestUserTuples)}">
+            <p>No rental requests at the moment.</p>
+        </div>
+
+        <div class="rental-request" th:each="tuple : ${carRentalRequestUserTuples}">
+            <div class="card card-glass mb-4 p-3">
+                <h5>
+                    <i class="bi bi-clock-history me-2"></i>
+                    <span th:text="${tuple.user.username}"></span> wants
+                    <span th:text="${tuple.rentalRequest.timeInDays} + ' days'"></span>
+                </h5>
+
+                <p><strong>Car:</strong> <span th:text="${tuple.car.brand} + ' ' + ${tuple.car.model}"></span></p>
+                <p><strong>Year:</strong> <span th:text="${tuple.car.year}"></span></p>
+                <p><strong>Price/Day:</strong> $<span th:text="${tuple.car.pricePerDay}"></span></p>
+                <p><strong>Total Cost:</strong> $<span th:text="${tuple.rentalRequest.totalCost}"></span></p>
+
+                <form th:action="@{/rent/{id}(id=${tuple.car.id})}" method="get" class="mt-3">
+                    <button type="submit" class="btn btn-primary btn-modern">
+                        <i class="bi bi-car-front-fill me-1"></i>Approve Rent
                     </button>
-                </h2>
-                <div th:id="|'req-collapse-' + ${iterStat.index}|" class="accordion-collapse collapse"
-                     th:attr="aria-labelledby='req-heading-' + ${iterStat.index}" data-bs-parent="#requestsAccordion">
-                    <div class="accordion-body card-glass">
-                        <p><strong>Car:</strong> <span th:text="${tuple.car.brand} + ' ' + ${tuple.car.model}"></span></p>
-                        <p><strong>Year:</strong> <span th:text="${tuple.car.year}"></span></p>
-                        <p><strong>Price/Day:</strong> $<span th:text="${tuple.car.pricePerDay}"></span></p>
-                        <p><strong>Total Cost:</strong> $<span th:text="${tuple.rentalRequest.totalCost}"></span></p>
-                        <form th:action="@{/rent/{id}(id=${tuple.car.id})}" method="get" class="mt-3">
-                            <button type="submit" class="btn btn-primary btn-modern">
-                                <i class="bi bi-car-front-fill me-1"></i>Approve Rent
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </section>
